@@ -1,0 +1,33 @@
+{
+  "name": "avalanche-icm-dashboard",
+  "version": "1.0.0",
+  "description": "Complete Avalanche Inter-Chain Messaging Dashboard",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run dev\"",
+    "build": "cd frontend && npm run build && cd ../backend && npm run build",
+    "start": "concurrently \"cd frontend && npm start\" \"cd backend && npm start\"",
+    "test": "npm run test:unit && npm run test:integration",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down",
+    "deploy": "./scripts/deploy.sh"
+  },
+  "keywords": [
+    "avalanche",
+    "icm",
+    "teleporter",
+    "cross-chain",
+    "blockchain",
+    "defi"
+  ],
+  "author": "Unite DeFi",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
