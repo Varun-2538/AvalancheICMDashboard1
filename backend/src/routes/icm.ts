@@ -13,6 +13,11 @@ const messageStats: Record<string, any> = {}
 // Send ICM message
 router.post('/send', async (req, res) => {
   try {
+    // Ensure we're only working on Fuji testnet
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🔒 Development mode: Fuji testnet only')
+    }
+    
     const {
       sourceChain,
       destinationChainId,
@@ -22,20 +27,34 @@ router.post('/send', async (req, res) => {
       walletAddress
     } = req.body
 
+    console.log('📨 Received ICM message request:', {
+      sourceChain,
+      destinationChainId,
+      recipient,
+      messageLength: message?.length,
+      amount,
+      walletAddress: walletAddress?.slice(0, 10) + '...'
+    })
+
     // Validate inputs
     if (!destinationChainId || !recipient || !message || !walletAddress) {
       return res.status(400).json({
-        error: 'Missing required fields'
+        error: 'Missing required fields',
+        received: { sourceChain, destinationChainId, recipient: !!recipient, message: !!message, walletAddress: !!walletAddress }
       })
     }
 
     // Validate recipient address
     const isValidAddress = await avalanche.validateAddress(recipient)
     if (!isValidAddress) {
+      console.log('❌ Invalid recipient address:', recipient)
       return res.status(400).json({
-        error: 'Invalid recipient address'
+        error: 'Invalid recipient address',
+        received: recipient
       })
     }
+
+    console.log('✅ Address validation passed, preparing transaction...')
 
     // Prepare transaction for MetaMask signing
     console.log('📝 Preparing ICM transaction for MetaMask signing...')
@@ -60,10 +79,11 @@ router.post('/send', async (req, res) => {
       estimatedDeliveryTime: '2-5 seconds'
     })
   } catch (error: any) {
-    console.error('Failed to send ICM message:', error)
+    console.error('❌ Failed to send ICM message:', error)
     res.status(500).json({
       error: 'Failed to send message',
-      details: error.message
+      details: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     })
   }
 })

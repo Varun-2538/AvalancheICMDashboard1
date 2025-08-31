@@ -9,7 +9,7 @@ const AVAILABLE_SUBNETS = [
   {
     id: 'dexalot',
     name: 'Dexalot',
-    chainId: '0x2VCAhX6vE3UnXC6s1CBPE6jJ4c4cHWMfPgCptuWS59pQ8WYxXw',
+    chainId: '0x0000000000000000000000000000000000000000000000000000000000000001',
     rpcUrl: 'https://subnets.avax.network/dexalot/testnet/rpc',
     explorerUrl: 'https://subnets-test.avax.network/dexalot',
     description: 'Decentralized exchange on Avalanche',
@@ -19,7 +19,7 @@ const AVAILABLE_SUBNETS = [
   {
     id: 'dfk',
     name: 'DeFi Kingdoms',
-    chainId: '0x2rwhRKN8qfxK9AEJunfUjn5WH7PQzUPPQKCb59ak6fwsrwF2R',
+    chainId: '0x0000000000000000000000000000000000000000000000000000000000000002',
     rpcUrl: 'https://subnets.avax.network/defikingdoms/dfk-chain/rpc',
     explorerUrl: 'https://subnets.avax.network/defikingdoms',
     description: 'GameFi platform with DeFi elements',
@@ -29,7 +29,7 @@ const AVAILABLE_SUBNETS = [
   {
     id: 'amplify',
     name: 'Amplify',
-    chainId: '0xzJytnh96Pc8rM337bBrtMvJDbEdDNjcXiG3WkTNCiLp8krJUk',
+    chainId: '0x0000000000000000000000000000000000000000000000000000000000000003',
     rpcUrl: 'https://subnets.avax.network/amplify/testnet/rpc',
     explorerUrl: 'https://subnets-test.avax.network/amplify',
     description: 'DeFi protocol for yield amplification',

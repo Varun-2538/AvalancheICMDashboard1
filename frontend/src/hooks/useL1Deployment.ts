@@ -1,6 +1,9 @@
 import { useState, useCallback } from 'react'
 import { useWallet } from './useWallet'
 
+// API base URL - should match your backend
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
+
 interface L1Configuration {
   id: string
   subnetName: string
@@ -54,7 +57,7 @@ export function useL1Deployment() {
         d.id === config.id ? { ...d, status: 'deploying' as const } : d
       ))
 
-      const response = await fetch('/api/l1-deployment/deploy', {
+      const response = await fetch(`${API_BASE_URL}/api/l1/deploy`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +100,7 @@ export function useL1Deployment() {
     config: L1Configuration
     allocations: Array<{ address: string; balance: string }>
   }) => {
-    const response = await fetch('/api/l1-deployment/genesis', {
+    const response = await fetch(`${API_BASE_URL}/api/l1/genesis`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -128,7 +131,7 @@ export function useL1Deployment() {
 
   const getDeploymentStatus = useCallback(async (deploymentId: string) => {
     try {
-      const response = await fetch(`/api/l1-deployment/status/${deploymentId}`)
+      const response = await fetch(`${API_BASE_URL}/api/l1/status/${deploymentId}`)
       if (!response.ok) {
         throw new Error('Failed to get deployment status')
       }

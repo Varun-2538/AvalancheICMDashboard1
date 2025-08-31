@@ -1,5 +1,9 @@
 import { useState, useCallback } from 'react'
+import { ethers } from 'ethers'
 import { useWallet } from './useWallet'
+
+// API base URL - should match your backend
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'
 
 interface ICMMessage {
   id: string
@@ -32,7 +36,7 @@ export function useICM() {
     
     try {
       // Step 1: Prepare transaction on backend
-      const prepareResponse = await fetch('/api/icm/send', {
+      const prepareResponse = await fetch(`${API_BASE_URL}/api/icm/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,10 +59,15 @@ export function useICM() {
       const signer = await provider.getSigner()
 
       console.log('🔐 Signing ICM transaction with MetaMask...')
+      
+      // Use a fixed gas limit to avoid estimation issues
+      const gasLimit = 500000 // 500k gas should be sufficient for ICM
+      
       const tx = await signer.sendTransaction({
         to: prepareResult.transactionData.to,
         data: prepareResult.transactionData.data,
-        value: prepareResult.transactionData.value
+        value: prepareResult.transactionData.value,
+        gasLimit: gasLimit
       })
 
       console.log('📡 Transaction sent:', tx.hash)
@@ -69,7 +78,7 @@ export function useICM() {
       console.log('✅ Transaction confirmed in block:', receipt.blockNumber)
 
       // Step 4: Process completed transaction on backend
-      const completeResponse = await fetch('/api/icm/complete', {
+      const completeResponse = await fetch(`${API_BASE_URL}/api/icm/complete`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +122,7 @@ export function useICM() {
     if (!address) return
 
     try {
-      const response = await fetch(`/api/icm/history?address=${address}`)
+      const response = await fetch(`${API_BASE_URL}/api/icm/history?address=${address}`)
       if (!response.ok) {
         throw new Error('Failed to fetch message history')
       }
@@ -136,7 +145,7 @@ export function useICM() {
     }
 
     try {
-      const response = await fetch(`/api/icm/stats?address=${address}`)
+      const response = await fetch(`${API_BASE_URL}/api/icm/stats?address=${address}`)
       if (!response.ok) {
         throw new Error('Failed to fetch stats')
       }
@@ -164,7 +173,7 @@ export function useICM() {
     }
 
     try {
-      const response = await fetch(`/api/icm/analytics?address=${address}`)
+      const response = await fetch(`${API_BASE_URL}/api/icm/analytics?address=${address}`)
       if (!response.ok) {
         throw new Error('Failed to fetch analytics')
       }

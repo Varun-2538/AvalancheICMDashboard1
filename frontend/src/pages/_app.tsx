@@ -16,8 +16,9 @@ export default function App({ Component, pageProps }: AppProps) {
           },
           success: {
             duration: 3000,
-            theme: {
+            iconTheme: {
               primary: '#4aed88',
+              secondary: '#fff',
             },
           },
         }}

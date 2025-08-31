@@ -132,7 +132,7 @@ export class L1DeployerService {
       // Add token allocations
       allocations.forEach(allocation => {
         if (allocation.address && allocation.balance) {
-          genesis.alloc[allocation.address.toLowerCase()] = {
+          (genesis.alloc as any)[allocation.address.toLowerCase()] = {
             balance: allocation.balance
           }
         }

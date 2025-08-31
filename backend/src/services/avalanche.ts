@@ -64,9 +64,11 @@ export class AvalancheService {
     }
   }
 
-  async validateAddress(address: string): boolean {
+  async validateAddress(address: string): Promise<boolean> {
     try {
-      return ethers.isAddress(address)
+      // In ethers v6, we need to use ethers.getAddress for validation
+      ethers.getAddress(address)
+      return true
     } catch {
       return false
     }
