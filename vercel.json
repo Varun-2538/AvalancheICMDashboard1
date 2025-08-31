@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "name": "avalanche-icm-dashboard",
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/src/index.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_BACKEND_URL": "@backend_url",
+    "AVALANCHE_FUJI_RPC_URL": "@avalanche_rpc_url",
+    "TELEPORTER_CONTRACT_ADDRESS": "@teleporter_contract"
+  },
+  "functions": {
+    "backend/src/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
